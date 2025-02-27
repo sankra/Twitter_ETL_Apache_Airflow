@@ -1,3 +1,4 @@
+#import required modules
 from datetime import timedelta
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
@@ -5,6 +6,8 @@ from airflow.utils.dates import days_ago
 from datetime import datetime
 from twitter_etl import run_twitter_etl
 
+
+#passing default arguments
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -23,6 +26,7 @@ dag = DAG(
     schedule_interval=timedelta(days=1),
 )
 
+#running the twitter_etl code
 run_etl = PythonOperator(
     task_id='complete_twitter_etl',
     python_callable=run_twitter_etl,
