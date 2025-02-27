@@ -1,9 +1,11 @@
+#import the required modules
 import tweepy
 import pandas as pd 
 import json
 from datetime import datetime
 import s3fs 
 
+#passing the API keys for getting data from twitter.
 def run_twitter_etl():
 
     access_key = "" 
@@ -27,6 +29,7 @@ def run_twitter_etl():
                             tweet_mode = 'extended'
                             )
 
+    #Actual twitter Data
     list = []
     for tweet in tweets:
         text = tweet._json["full_text"]
