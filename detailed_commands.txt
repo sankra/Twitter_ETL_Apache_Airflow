@@ -1,0 +1,75 @@
+# In local machine run these commands:: 
+Pip install pandas
+Pip install tweepy
+Pip install s3fs
+
+NOTE: You can also use pip3 instead of pip.
+
+
+IN EC2::
+#enter your ec2 instance
+ssh -i "airflow_twitter_ec2_key.pem" ubuntu@ec2-13-234-20-235.ap-south-1.compute.amazonaws.com
+
+#modify permissions
+chmod 400 airflow_twitter_ec2_key.pem
+
+
+ssh -i "airflow_twitter_ec2_key.pem" ubuntu@ec2-13-234-20-235.ap-south-1.compute.amazonaws.com
+
+#run these commands in ec2 to install tweepy and airflow
+sudo apt-get update
+sudo apt install python3-pip
+sudo pip install apache-airflow
+sudo pip install pandas 
+sudo pip install s3fs
+sudo pip install tweepy
+
+
+#command to check Airflow 
+airflow
+
+#run airflow standalone
+airflow standalone
+
+# if Airflow standalone. —— doesn’t work and if No user or password created
+# Do these instead-
+
+airflow users  create --role Admin --username admin_user --email admin --firstname admin --lastname admin --password admin
+
+airflow webserver --port 8080
+
+# Then it will open airflow UI
+
+#airflow commands in EC2
+
+
+sudo nano airflow.cfg
+#write this in the .cfg file
+dags_folder = /home/ubuntu/airflow/twitter_dags
+#save and exit
+
+cd twitter_dags/
+
+sudo nano twitter_dag.py.   #-   copy dag content
+
+Sudo nano twitter_etl.py    # —  copy etl content
+
+
+#Restart airflow again by stopping it ::
+
+kill $(cat ~/airflow/airflow-scheduler.pid)
+
+# in case of error - https://stackoverflow.com/questions/65656254/how-to-kill-airflow-scheduler-and-webserver#:~:text=NOTE%3A%20Starting%20with%20Airflow%202.2,shuts%20down%20all%20running%20components.
+
+lsof -i tcp:8080
+#Should return nothing 
+
+
+
+
+#You might get error - 
+#Then run scheduler again
+
+airflow scheduler
+
+#https://stackoverflow.com/questions/57668584/airflow-scheduler-does-not-appear-to-be-running-after-execute-a-task
